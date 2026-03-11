@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: mongodb-eks
-  namespace: mongodb-eks
+  namespace: argocd
 spec:
   destination:
     name: in-cluster
