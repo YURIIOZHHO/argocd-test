@@ -1,30 +1,48 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: mongodb-eks
+  name: psmdb-mongodb
   namespace: argocd
 spec:
-  destination:
-    name: in-cluster
-    namespace: mongodb-eks
-  sources:
-    - chart: psmdb-operator-crds
-      repoURL: https://percona.github.io/percona-helm-charts/
-      targetRevision: 1.22.0
-    - chart: psmdb-operator
-      repoURL: https://percona.github.io/percona-helm-charts/
-      targetRevision: 1.22.0
-    - repoURL: "https://github.com/YURIIOZHHO/argocd-test.git"
-      path: "charts/mongodb-eks/dev"
-      targetRevision: main
-      # helm:
-      #   valueFiles:
-      #     - values_dev.yaml
-  project: default
-  syncPolicy:
-    automated:
-      prune   : true
-      selfHeal: true
-    syncOptions:
-      - SkipDryRunOnMissingResource=true
-      - ServerSideApply=true
+  generators:
+    - list:
+        elements:
+          - name: crds
+            repoURL: https://percona.github.io/percona-helm-charts/
+            chart: psmdb-operator-crds
+            targetRevision: 1.22.0
+            path: ""
+            namespace: mongodb-eks
+          - name: operator
+            repoURL: https://percona.github.io/percona-helm-charts/
+            chart: psmdb-operator
+            targetRevision: 1.22.0
+            path: ""
+            namespace: mongodb-eks
+          - name: mongodb-cr
+            repoURL: "https://github.com/YURIIOZHHO/argocd-test.git"
+            path: "charts/mongodb-eks/dev"
+            targetRevision: main
+            namespace: mongodb-eks
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: '{{repoURL}}'
+        chart: '{{chart}}'
+        path: '{{path}}'
+        targetRevision: '{{targetRevision}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+  strategy:
+    hook:
+      dependsOn:
+        - crds
+        - operator
