@@ -8,9 +8,9 @@ spec:
     name: in-cluster
     namespace: mongodb-eks
   sources:
-    # - chart: psmdb-operator-crds
-    #   repoURL: https://percona.github.io/percona-helm-charts/
-    #   targetRevision: 1.22.0
+    - chart: psmdb-operator-crds
+      repoURL: https://percona.github.io/percona-helm-charts/
+      targetRevision: 1.22.0
     - chart: psmdb-operator
       repoURL: https://percona.github.io/percona-helm-charts/
       targetRevision: 1.22.0
@@ -27,3 +27,4 @@ spec:
       selfHeal: true
     syncOptions:
       - SkipDryRunOnMissingResource=true
+      - ServerSideApply=true
