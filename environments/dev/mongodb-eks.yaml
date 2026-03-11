@@ -27,7 +27,6 @@ spec:
     metadata:
       name: '{{name}}'
       annotations:
-        # задаємо порядок деплою
         argocd.argoproj.io/sync-wave: |
           {{- if eq name "psmdb-crds" }}0{{- end}}
           {{- if eq name "psmdb-operator" }}1{{- end}}
@@ -49,3 +48,5 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - SkipDryRunOnMissingResource=true
+          # Вимикаємо ServerSideApply лише для CRD, щоб уникнути занадто довгих annotations
+          - "{{- if eq name 'psmdb-crds' }}ServerSideApply=false{{- end}}"
