@@ -11,27 +11,33 @@ spec:
   generators:
     - list:
         elements:
-          - name: psmdb-01-crds
+          - name: psmdb-crds
             repoURL: https://percona.github.io/percona-helm-charts/
             chart: psmdb-operator-crds
             targetRevision: 1.22.0
-          - name: psmdb-02-operator
+          - name: psmdb-operator
             repoURL: https://percona.github.io/percona-helm-charts/
             chart: psmdb-operator
             targetRevision: 1.22.0
-          - name: psmdb-03-instance
+          - name: psmdb-instance
             repoURL: "https://github.com/YURIIOZHHO/argocd-test.git"
             path: "charts/mongodb-eks/dev"
             targetRevision: main
   template:
     metadata:
       name: '{{name}}'
+      annotations:
+        # задаємо порядок деплою
+        argocd.argoproj.io/sync-wave: |
+          {{- if eq name "psmdb-crds" }}0{{- end}}
+          {{- if eq name "psmdb-operator" }}1{{- end}}
+          {{- if eq name "psmdb-instance" }}2{{- end}}
     spec:
       project: default
       source:
         repoURL: '{{repoURL}}'
         chart: '{{chart}}'
-        path: '{{path}}'   
+        path: '{{path}}'
         targetRevision: '{{targetRevision}}'
       destination:
         server: https://kubernetes.default.svc
@@ -42,5 +48,4 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - ServerSideApply=true
           - SkipDryRunOnMissingResource=true
