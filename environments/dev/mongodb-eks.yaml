@@ -26,5 +26,5 @@ spec:
       prune   : true
       selfHeal: true
     syncOptions:
-      - SkipDryRunOnMissingResource=true
+      # - SkipDryRunOnMissingResource=true
       - ServerSideApply=true
