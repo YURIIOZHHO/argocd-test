@@ -15,9 +15,9 @@ spec:
       #   releaseName: psmdb-operator
       #   valueFiles:
       #     - $values/charts/mongodb-eks/dev/values_dev.yaml
-      values: |
-        replsets:
-          size: 3
+      # values: |
+      #   replsets:
+      #     size: 3
 
     - chart: psmdb-operator
       repoURL: https://percona.github.io/percona-helm-charts/
@@ -26,9 +26,9 @@ spec:
       #   releaseName: psmdb-operator
       #   valueFiles:
       #     - $values/charts/mongodb-eks/dev/values_dev.yaml
-      values: |
-        replsets:
-          size: 3
+      # values: |
+      #   replsets:
+      #     size: 3
 
 
     - repoURL: "https://github.com/YURIIOZHHO/argocd-test.git"
