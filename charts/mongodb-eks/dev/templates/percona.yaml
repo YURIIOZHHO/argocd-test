@@ -33,7 +33,7 @@ spec:
     tasks:
      - name: "test-backup"
        enabled: true
-       schedule: "13 7 * * *"
+       schedule: "0 8 * * *"
        retention:
           count: 3
           type: count
