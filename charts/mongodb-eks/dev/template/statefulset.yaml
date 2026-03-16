@@ -8,8 +8,8 @@ spec:
   image: 
     repository: {{ .Values.image.repository }}
     tag: {{ .Values.image.tag }}
-
-  imagePullPolicy: {{ .Values.imagePullPolicy }}
+    
+  imagePullPolicy: Always
   # unsafeFlags:
   #   replsetSize: true
   replsets:
