@@ -116,7 +116,7 @@ replsets:
     #     mode: slowOp
     #   systemLog:
     #     verbosity: 1
-    # serviceAccountName: percona-server-mongodb-operator
+    serviceAccountName: percona-backup-sa
     # topologySpreadConstraints:
     #   - labelSelector:
     #       matchLabels:
