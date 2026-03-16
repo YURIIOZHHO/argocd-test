@@ -27,9 +27,7 @@ spec:
               storage: {{ .Values.replsets.rs0.volumeSpec.pvc.resources.requests.storage }}
   backup:
     enabled: {{ .Values.backup.enabled }}
-    image:
-      repository: {{ .Values.backup.image.repository }} 
-      tag: {{ .Values.backup.image.tag }} 
+    image: percona/percona-backup-mongodb:2.12.0
     storages:
       s3-percona-test-05-03-2026:
         type: s3
