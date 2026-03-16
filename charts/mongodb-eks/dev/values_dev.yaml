@@ -271,11 +271,11 @@ replsets:
         #   volume.beta.kubernetes.io/storage-class: example-hostpath
         # labels:
         #   rack: rack-22
-        # storageClassName: standard
-        # accessModes: [ "ReadWriteOnce" ]
+        storageClassName: gp2 # or standart
+        accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 3Gi
+            storage: 10Gi
     # hostAliases:
     # - ip: "10.10.0.2"
     #   hostnames:
@@ -443,7 +443,7 @@ replsets:
           memory: "1Gi"
 
 sharding:
-  enabled: true
+  enabled: false
   balancer:
     enabled: true
 
@@ -714,11 +714,11 @@ backup:
   #     cpu: "300m"
   #     memory: "1Gi"
   storages:
-    # s3-us-west:
+    s3-percona-test-05-03-2026:
     #   main: true
-    #   type: s3
-    #   s3:
-    #     bucket: S3-BACKUP-BUCKET-NAME-HERE
+      type: s3
+      s3:
+        bucket: s3-percona-test-05-03-2026
     #     credentialsSecret: my-cluster-name-backup-s3
     #     serverSideEncryption:
     #       kmsKeyID: 1234abcd-12ab-34cd-56ef-1234567890ab
@@ -729,7 +729,7 @@ backup:
     #       numMaxRetries: 3
     #       minRetryDelay: 30ms
     #       maxRetryDelay: 5m
-    #     region: us-west-2
+        region: eu-central-1
     #     prefix: ""
     #     uploadPartSize: 10485760
     #     maxUploadParts: 10000
@@ -798,13 +798,13 @@ backup:
   #       "node01:2017": /usr/bin/mongo
   #       "node03:27017": /usr/bin/mongo
   tasks:
-  # - name: daily-s3-us-west
-  #   enabled: true
-  #   schedule: "0 0 * * *"
-  #   retention:
-  #     count: 3
-  #     type: count
-  #     deleteFromStorage: true
+   - name: daily-s3-eu-central
+     enabled: true
+     schedule: "5 13 * * *"
+     retention:
+       count: 3
+       type: count
+       deleteFromStorage: true
   #   storageName: s3-us-west
   #   compressionType: gzip
   # - name: weekly-s3-us-west
@@ -823,8 +823,8 @@ backup:
   #     count: 3
   #     type: count
   #     deleteFromStorage: true
-  #   type: physical
-  #   storageName: s3-us-west
+     type: physical
+     storageName: s3-percona-test-05-03-2026
   #   compressionType: gzip
   #   compressionLevel: 6
 
@@ -845,7 +845,7 @@ backup:
 #   # PMM_SERVER_PASSWORD: admin
 
 logcollector:
-  enabled: true
+  enabled: false
   image:
     repository: percona/fluentbit
     tag: 4.0.1-2
