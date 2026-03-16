@@ -4,9 +4,12 @@ metadata:
   name: mongodb-eks
   namespace: mongodb-eks
 spec:
-  crVersion: 1.22.0
-  image: percona/percona-server-mongodb:8.0.19-7
-  imagePullPolicy: Always
+  crVersion: {{ .Values.crVersion }}
+  image: 
+    repository: {{ .Values.image.repository }}
+    tag: {{ .Values.image.tag }}
+
+  imagePullPolicy: {{ .Values.imagePullPolicy }}
   # unsafeFlags:
   #   replsetSize: true
   replsets:
@@ -24,7 +27,9 @@ spec:
               storage: {{ .Values.replsets.rs0.volumeSpec.pvc.resources.requests.storage }}
   backup:
     enabled: {{ .Values.backup.enabled }}
-    image: percona/percona-backup-mongodb:2.12.0
+    image:
+      repository: {{ .Values.backup.image.repository }} 
+      tag: {{ .Values.backup.image.tag }} 
     storages:
       s3-percona-test-05-03-2026:
         type: s3
