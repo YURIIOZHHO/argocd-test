@@ -800,7 +800,7 @@ backup:
   tasks:
    - name: daily-s3-eu-central
      enabled: true
-     schedule: "16 49 * * *"
+     schedule: "0 17 * * *"
      retention:
        count: 3
        type: count
